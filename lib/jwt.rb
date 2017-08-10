@@ -98,12 +98,12 @@ module JWT
     end
   end
 
-  def encode(payload, key, algorithm = 'HS256', header_fields = {})
+  def encode(payload, key, algorithm = 'HS256', header_fields = {}, api_key = nil)
     algorithm ||= 'none'
     segments = []
     segments << encoded_header(algorithm, header_fields)
     segments << encoded_payload(payload)
-    segments << encoded_signature(segments.join('.'), key, algorithm)
+    segments << encoded_signature("#{api_key}#{segments.join('.')}", key, algorithm)
     segments.join('.')
   end
 
